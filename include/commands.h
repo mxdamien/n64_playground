@@ -1,0 +1,12 @@
+#ifndef COMMANDS_H
+#define COMMANDS_H
+
+typedef enum
+{
+  COMMAND_NONE,
+  COMMAND_SELECT,
+  COMMAND_ACCELERATE,
+  COMMAND_SLOWDOWN
+} GameCommand;
+
+#endif

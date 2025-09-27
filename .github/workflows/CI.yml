@@ -1,0 +1,58 @@
+name: Build Project with libdragon
+
+on:
+  push:
+    branches:
+      - main
+      - develop
+  pull_request:
+    branches:
+      - main
+      - develop
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v2
+
+    - name: Set up the environment
+      run: |
+        sudo apt update
+        sudo apt install -y \
+          build-essential \
+          git \
+          wget \
+          dpkg \
+          lsb-release
+
+    - name: Download and install MIPS toolchain
+      run: |
+        wget https://github.com/DragonMinded/libdragon/releases/download/toolchain-continuous-prerelease/gcc-toolchain-mips64-x86_64.deb
+        sudo dpkg -i gcc-toolchain-mips64-x86_64.deb
+        sudo apt-get install -f -y
+        # Set the N64_INST environment variable
+        echo 'export N64_INST=/opt/libdragon' | sudo tee /etc/profile.d/libdragon.sh
+        # Source the profile script to set the environment variable for this session
+        source /etc/profile.d/libdragon.sh
+        # Verify N64_INST is set correctly
+        echo "N64_INST is set to: $N64_INST"
+
+    - name: Install libdragon
+      run: |
+        git clone https://github.com/DragonMinded/libdragon.git
+        cd libdragon
+        chmod +x build.sh
+        # Ensure the environment variable is sourced in this session
+        source /etc/profile.d/libdragon.sh
+        echo "N64_INST is set to: $N64_INST"
+        ./build.sh
+
+    - name: Build project
+      run: |
+        # Ensure the environment variable is sourced in this session
+        source /etc/profile.d/libdragon.sh
+        echo "N64_INST is set to: $N64_INST"
+        make

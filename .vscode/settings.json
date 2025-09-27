@@ -1,0 +1,27 @@
+{
+  "files.associations": {
+    "*.rmd": "markdown",
+    "*.qmd": "quarto",
+    "cmath": "cpp",
+    "libdragon.h": "c",
+    "display.h": "c",
+    "array": "c",
+    "string": "c",
+    "string_view": "c",
+    "span": "c",
+    "game.h": "c",
+    "buttonmap.h": "c",
+    "stdio.h": "c",
+    "inputstate.h": "c",
+    "input.h": "c",
+    "stdint.h": "c",
+    "random": "c",
+    "scene_main_menu.h": "c",
+    "scenes.h": "c",
+    "ecs.h": "c",
+    "scene_game.h": "c",
+    "scene_scoreboard.h": "c",
+    "scene_manager.h": "c",
+    "string.h": "c"
+  }
+}
