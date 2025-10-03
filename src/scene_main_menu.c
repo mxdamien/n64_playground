@@ -8,11 +8,9 @@ static SceneMainMenuState scene_state;
 void scene_init_main_menu(SceneManager *scene_manager)
 {
   ecs_init(&scene_state.ecs);
+  render_system_init(&scene_state.renderSystem);
 
-  surface_t *display = display_get();
-  uint32_t color = graphics_make_color(0xCC, 0xCC, 0xFF, 0xFF);
-  graphics_fill_screen(display, color);
-  display_show(display);
+  render_system_register_callbacks(&scene_state.ecs, &scene_state.renderSystem);
 }
 
 void scene_update_main_menu(SceneManager *scene_manager, GameCommand command)

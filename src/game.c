@@ -9,7 +9,7 @@
 
 #define TICK_TIME_MS (1000 / TICKS_PER_SECOND)
 
-void game_loop(GameContext *game)
+void game_loop(GameContext *const game)
 {
   uint32_t last_tick = timer_ticks();
   uint32_t lag = 0;

@@ -15,8 +15,8 @@ typedef struct
   bool needs_init;
 } SceneManager;
 
-void scene_manager_init(SceneManager *scene_manager);
-void scene_manager_update(SceneManager *scene_manager, GameCommand command);
-void scene_manager_set_scene(SceneManager *scene_manager, scene_t scene);
+void scene_manager_init(SceneManager *const scene_manager);
+void scene_manager_update(SceneManager *const scene_manager, GameCommand command);
+void scene_manager_set_scene(SceneManager *const scene_manager, scene_t scene);
 
 #endif

@@ -22,6 +22,9 @@
     "scene_game.h": "c",
     "scene_scoreboard.h": "c",
     "scene_manager.h": "c",
-    "string.h": "c"
+    "string.h": "c",
+    "vec3.h": "c",
+    "components.h": "c",
+    "rendersystem.h": "c",
   }
 }

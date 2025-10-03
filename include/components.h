@@ -1,14 +1,9 @@
 #ifndef COMPONENTS_H
 #define COMPONENTS_H
 
-typedef struct
-{
-  float x, y;
-} Position;
+#include "vec3.h"
 
-typedef struct
-{
-  float vx, vy;
-} Velocity;
+typedef vec3 Position;
+typedef vec3 Velocity;
 
 #endif

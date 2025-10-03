@@ -7,12 +7,12 @@
 #include "scene_scoreboard.h"
 #include "inputstate.h"
 
-void scene_manager_init(SceneManager *scene_manager)
+void scene_manager_init(SceneManager *const scene_manager)
 {
   scene_manager->current_scene = SCENE_MAIN_MENU;
 }
 
-void scene_manager_update(SceneManager *scene_manager, GameCommand command)
+void scene_manager_update(SceneManager *const scene_manager, GameCommand command)
 {
   if (scene_manager->needs_init)
   {
@@ -50,7 +50,7 @@ void scene_manager_update(SceneManager *scene_manager, GameCommand command)
   }
 }
 
-void scene_manager_set_scene(SceneManager *scene_manager, scene_t scene)
+void scene_manager_set_scene(SceneManager *const scene_manager, scene_t scene)
 {
   if (scene_manager->current_scene != scene)
   {

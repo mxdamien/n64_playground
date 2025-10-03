@@ -14,6 +14,6 @@ typedef struct
   SceneManager scene_manager;
 } GameContext;
 
-void game_loop(GameContext *game);
+void game_loop(GameContext *const game);
 
 #endif

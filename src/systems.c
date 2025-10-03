@@ -9,8 +9,9 @@ void system_movement(ECS *ecs)
         ecs->has_position[i] &&
         ecs->has_velocity[i])
     {
-      ecs->positions[i].x += ecs->velocities[i].vx;
-      ecs->positions[i].y += ecs->velocities[i].vy;
+      ecs->positions[i].x += ecs->velocities[i].x;
+      ecs->positions[i].y += ecs->velocities[i].y;
+      ecs->positions[i].z += ecs->velocities[i].z;
     }
   }
 }
