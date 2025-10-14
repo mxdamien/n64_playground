@@ -9,6 +9,14 @@ GameCommand scene_input_to_command_mapping(scene_t scene, const InputState *cons
     {
       return COMMAND_SELECT;
     }
+    if (input_state->controller[0].buttons.Up.pressed)
+    {
+      return COMMAND_UP;
+    }
+    if (input_state->controller[0].buttons.Down.pressed)
+    {
+      return COMMAND_DOWN;
+    }
     return COMMAND_NONE;
 
   case SCENE_GAME:

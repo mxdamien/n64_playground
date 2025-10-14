@@ -26,5 +26,7 @@
     "vec3.h": "c",
     "components.h": "c",
     "rendersystem.h": "c",
+    "fmath.h": "c",
+    "t3dmath.h": "c"
   }
 }

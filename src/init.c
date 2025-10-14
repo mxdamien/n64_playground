@@ -1,10 +1,15 @@
 #include "init.h"
 
 #include <libdragon.h>
+#include <t3d/t3d.h>
 
-void init_system(void)
+void init_display();
+
+void init_system()
 {
   init_display();
+  rdpq_init();
+  t3d_init((T3DInitParams){});
   console_init();
 }
 

@@ -24,6 +24,8 @@ CFLAGS += -I$(INCLUDE_DIR)
 
 include $(N64_INST)/include/n64.mk
 
+include $(N64_INST)/include/t3d.mk
+
 # Set object files
 OBJS = $(patsubst $(SRC_DIR)/%.c,$(BUILD_DIR)/%.o,$(SRC))
 

@@ -2,6 +2,5 @@
 #define INIT_H
 
 void init_system();
-void init_display();
 
 #endif

@@ -14,7 +14,7 @@ void scene_init_game(SceneManager *scene_manager)
   render_system_register_callbacks(&scene_state.ecs, &scene_state.renderSystem);
 
   Entity player = ecs_create_entity(&scene_state.ecs);
-  ecs_add_position(&scene_state.ecs, player, (Position){100.0f, 10.0f, 0.0f});
+  ecs_add_position(&scene_state.ecs, player, (Position){0.0f, 0.0f, 0.0f});
   ecs_add_velocity(&scene_state.ecs, player, (Velocity){0.0f, 0.0f, 0.0f});
 
   render_system_register_entity(&scene_state.renderSystem, player, 1); // Texture ID "1" for now
@@ -30,25 +30,25 @@ void scene_update_game(SceneManager *scene_manager, GameCommand command)
   if (command == COMMAND_UP)
   {
     Position pos = ecs_get_position(&scene_state.ecs, 0);
-    ecs_add_position(&scene_state.ecs, 0, (Position){pos.x, pos.y - 1, pos.z});
+    ecs_add_position(&scene_state.ecs, 0, (Position){pos.x, pos.y - 1.2, pos.z});
   }
 
   if (command == COMMAND_DOWN)
   {
     Position pos = ecs_get_position(&scene_state.ecs, 0);
-    ecs_add_position(&scene_state.ecs, 0, (Position){pos.x, pos.y + 1, pos.z});
+    ecs_add_position(&scene_state.ecs, 0, (Position){pos.x, pos.y + 1.2, pos.z});
   }
 
   if (command == COMMAND_LEFT)
   {
     Position pos = ecs_get_position(&scene_state.ecs, 0);
-    ecs_add_position(&scene_state.ecs, 0, (Position){pos.x - 1, pos.y, pos.z});
+    ecs_add_position(&scene_state.ecs, 0, (Position){pos.x - 1.2, pos.y, pos.z});
   }
 
   if (command == COMMAND_RIGHT)
   {
     Position pos = ecs_get_position(&scene_state.ecs, 0);
-    ecs_add_position(&scene_state.ecs, 0, (Position){pos.x + 1, pos.y, pos.z});
+    ecs_add_position(&scene_state.ecs, 0, (Position){pos.x + 1.2, pos.y, pos.z});
   }
 }
 
