@@ -42,7 +42,8 @@ jobs:
 
     - name: Install libdragon
       run: |
-        git clone https://github.com/DragonMinded/libdragon.git
+        echo "Cloning libdragon repository preview branch. Tiny3D needs the preview branch"
+        git clone --branch preview https://github.com/DragonMinded/libdragon.git
         cd libdragon
         chmod +x build.sh
         # Ensure the environment variable is sourced in this session
