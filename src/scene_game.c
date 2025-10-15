@@ -54,5 +54,8 @@ void scene_update_game(SceneManager *scene_manager, GameCommand command)
 
 void scene_exit_game()
 {
+  surface_t *disp = display_get();
+  graphics_fill_screen(disp, 0x0);
+  display_show(disp);
   memset(&scene_state, 0, sizeof(SceneGameState));
 }

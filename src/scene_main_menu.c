@@ -1,4 +1,7 @@
 #include "scene_main_menu.h"
+
+#include "draw_string.h"
+
 #include <libdragon.h>
 #include <string.h>
 
@@ -18,19 +21,6 @@ typedef enum
 
 #define MENU_ITEM_COLOR_HIGHLIGHT 0xFFFFFF00
 #define MENU_ITEM_COLOR_NORMAL 0xFFFFFFFF
-
-int get_string_width(const char *str)
-{
-  return strlen(str) * 8; // Assuming 8 pixels per character
-}
-
-void print_centered_text(surface_t *disp, int y, const char *str)
-{
-  int screen_width = disp->width;
-  int text_width = get_string_width(str);
-  int x_position = (screen_width - text_width) / 2; // Centered x position
-  graphics_draw_text(disp, x_position, y, str);
-}
 
 void scene_init_main_menu(SceneManager *scene_manager)
 {
@@ -129,5 +119,8 @@ void scene_update_main_menu(SceneManager *scene_manager, GameCommand command)
 
 void scene_exit_main_menu()
 {
+  surface_t *disp = display_get();
+  graphics_fill_screen(disp, 0x0);
+  display_show(disp);
   memset(&scene_state, 0, sizeof(SceneMainMenuState));
 }
