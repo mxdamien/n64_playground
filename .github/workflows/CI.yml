@@ -52,7 +52,7 @@ jobs:
 
     - name: Install tiny3d
       run: |
-        git clone https://github.com/DragonMinded/tiny3d.git
+        git clone https://github.com/HailToDodongo/tiny3d.git
         cd tiny3d
         chmod +x build.sh
         # Ensure the environment variable is sourced in this session
