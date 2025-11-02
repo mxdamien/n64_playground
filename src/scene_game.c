@@ -1,6 +1,9 @@
 #include "scene_game.h"
+
 #include "rendersystem.h"
 #include "ecs.h"
+#include "assets.h"
+
 #include <libdragon.h>
 #include <string.h>
 
@@ -16,8 +19,7 @@ void scene_init_game(SceneManager *scene_manager)
   Entity player = ecs_create_entity(&scene_state.ecs);
   ecs_add_position(&scene_state.ecs, player, (Position){0.0f, 0.0f, 0.0f});
   ecs_add_velocity(&scene_state.ecs, player, (Velocity){0.0f, 0.0f, 0.0f});
-
-  render_system_register_entity(&scene_state.renderSystem, player, 1); // Texture ID "1" for now
+  ecs_add_model(&scene_state.ecs, player, ID_MODEL_TABLE);
 }
 
 void scene_update_game(SceneManager *scene_manager, GameCommand command)

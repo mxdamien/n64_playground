@@ -27,6 +27,14 @@
     "components.h": "c",
     "rendersystem.h": "c",
     "fmath.h": "c",
-    "t3dmath.h": "c"
+    "t3dmath.h": "c",
+    "cstdlib": "cpp",
+    "charconv": "c",
+    "compare": "c",
+    "functional": "c",
+    "tuple": "c",
+    "type_traits": "c",
+    "utility": "c",
+    "variant": "c"
   }
 }

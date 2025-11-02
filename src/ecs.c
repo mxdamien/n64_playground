@@ -4,6 +4,7 @@
 
 void trigger_position_callbacks(const ECS *ecs, Entity e);
 void trigger_velocity_callbacks(const ECS *ecs, Entity e);
+void trigger_model_callbacks(const ECS *ecs, Entity e);
 
 void ecs_init(ECS *ecs)
 {
@@ -49,17 +50,20 @@ void ecs_add_velocity(ECS *const ecs, Entity e, Velocity vel)
   trigger_velocity_callbacks(ecs, e);
 }
 
-void ecs_register_velocity_callback(ECS *const ecs, VelocityCallback callback, void *context)
+void ecs_add_model(ECS *const ecs, Entity e, Model model)
 {
-  if (!callback)
-    return;
+  ecs->models[e] = model;
+  ecs->has_model[e] = true;
+  trigger_model_callbacks(ecs, e);
+}
 
+void ecs_register_velocity_callback(ECS *const ecs, VelocityCallback callback)
+{
   for (int i = 0; i < MAX_CALLBACKS; i++)
   {
     if (ecs->velocity_callbacks[i] == NULL)
     {
       ecs->velocity_callbacks[i] = callback;
-      ecs->velocity_contexts[i] = context;
       return;
     }
   }
@@ -71,17 +75,12 @@ void trigger_velocity_callbacks(const ECS *const ecs, Entity e)
   {
     if (ecs->velocity_callbacks[i])
     {
-      void *context = ecs->velocity_contexts[e];
-
-      if (!context)
-        return;
-
-      ecs->velocity_callbacks[i](ecs->velocities[e], e, context);
+      ecs->velocity_callbacks[i](ecs, e);
     }
   }
 }
 
-void ecs_register_position_callback(ECS *const ecs, PositionCallback callback, void *context)
+void ecs_register_position_callback(ECS *const ecs, PositionCallback callback)
 {
   if (!callback)
     return;
@@ -91,7 +90,6 @@ void ecs_register_position_callback(ECS *const ecs, PositionCallback callback, v
     if (ecs->position_callbacks[i] == NULL)
     {
       ecs->position_callbacks[i] = callback;
-      ecs->position_contexts[i] = context;
       return;
     }
   }
@@ -103,12 +101,7 @@ void trigger_position_callbacks(const ECS *const ecs, Entity e)
   {
     if (ecs->position_callbacks[i])
     {
-      void *context = ecs->position_contexts[e];
-
-      if (!context)
-        return;
-
-      ecs->position_callbacks[i](ecs->positions[e], e, context);
+      ecs->position_callbacks[i](ecs, e);
     }
   }
 }
@@ -116,4 +109,35 @@ void trigger_position_callbacks(const ECS *const ecs, Entity e)
 Position ecs_get_position(const ECS *const ecs, Entity e)
 {
   return ecs->positions[e];
+}
+
+void ecs_register_model_callback(ECS *const ecs, ModelCallback callback)
+{
+  if (!callback)
+    return;
+
+  for (int i = 0; i < MAX_CALLBACKS; i++)
+  {
+    if (ecs->model_callbacks[i] == NULL)
+    {
+      ecs->model_callbacks[i] = callback;
+      return;
+    }
+  }
+}
+
+void trigger_model_callbacks(const ECS *const ecs, Entity e)
+{
+  for (int i = 0; i < MAX_CALLBACKS; i++)
+  {
+    if (ecs->model_callbacks[i])
+    {
+      ecs->model_callbacks[i](ecs, e);
+    }
+  }
+}
+
+Model ecs_get_model(const ECS *const ecs, Entity e)
+{
+  return ecs->models[e];
 }

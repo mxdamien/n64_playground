@@ -9,6 +9,8 @@ void init_system()
 {
   init_display();
   rdpq_init();
+  asset_init_compression(2);
+  dfs_init(DFS_DEFAULT_LOCATION);
   t3d_init((T3DInitParams){});
   console_init();
 }
