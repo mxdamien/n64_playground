@@ -15,7 +15,6 @@ typedef struct
 } RenderSystem;
 
 void render_system_init(RenderSystem *const render_system);
-void render_system_register_callbacks(ECS *const ecs, RenderSystem *const render_system);
-void render_system_update(const RenderSystem *const render_system);
+void render_entities(ECS *const ecs);
 
 #endif

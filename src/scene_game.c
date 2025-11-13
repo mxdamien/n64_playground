@@ -14,8 +14,6 @@ void scene_init_game(SceneManager *scene_manager)
   ecs_init(&scene_state.ecs);
   render_system_init(&scene_state.renderSystem);
 
-  render_system_register_callbacks(&scene_state.ecs, &scene_state.renderSystem);
-
   Entity player = ecs_create_entity(&scene_state.ecs);
   ecs_add_position(&scene_state.ecs, player, (Position){0.0f, 0.0f, 0.0f});
   ecs_add_velocity(&scene_state.ecs, player, (Velocity){0.0f, 0.0f, 0.0f});
@@ -24,8 +22,6 @@ void scene_init_game(SceneManager *scene_manager)
 
 void scene_update_game(SceneManager *scene_manager, GameCommand command)
 {
-  render_system_update(&scene_state.renderSystem);
-
   if (command == COMMAND_SELECT)
     scene_manager_set_scene(scene_manager, SCENE_SCOREBOARD);
 
@@ -52,6 +48,8 @@ void scene_update_game(SceneManager *scene_manager, GameCommand command)
     Position pos = ecs_get_position(&scene_state.ecs, 0);
     ecs_add_position(&scene_state.ecs, 0, (Position){pos.x + 1.2, pos.y, pos.z});
   }
+
+  render_entities(&scene_state.ecs);
 }
 
 void scene_exit_game()

@@ -28,7 +28,6 @@ void game_loop(GameContext *const game)
       input_read(&game->input_state);
       GameCommand command = scene_input_to_command_mapping(game->scene_manager.current_scene, &game->input_state);
       scene_manager_update(&game->scene_manager, command);
-
       lag -= TICK_TIME_MS;
     }
   }

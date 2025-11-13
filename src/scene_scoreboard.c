@@ -21,8 +21,6 @@ void scene_init_scoreboard(SceneManager *scene_manager)
   print_centered_text(disp, 10, MENU_HEADER);
 
   display_show(disp);
-
-  render_system_register_callbacks(&scene_state.ecs, &scene_state.renderSystem);
 }
 
 void scene_update_scoreboard(SceneManager *scene_manager, GameCommand command)

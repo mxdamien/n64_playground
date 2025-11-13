@@ -26,7 +26,6 @@ void scene_init_main_menu(SceneManager *scene_manager)
 {
   ecs_init(&scene_state.ecs);
   render_system_init(&scene_state.renderSystem);
-  render_system_register_callbacks(&scene_state.ecs, &scene_state.renderSystem);
 
   surface_t *disp = display_get();
   graphics_fill_screen(disp, 0x0);
