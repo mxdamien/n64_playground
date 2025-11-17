@@ -11,7 +11,7 @@ static const char *script_filenames[] = {};
 
 static const char *sound_filenames[] = {};
 
-const char *GetModelPath(uint32_t model_id)
+const char *get_model_path(uint32_t model_id)
 {
   if (model_id < sizeof(model_filenames) / sizeof(model_filenames[0]))
   {
@@ -22,7 +22,7 @@ const char *GetModelPath(uint32_t model_id)
   return ID_ASSET_INVALID;
 }
 
-const char *GetTexturePath(uint32_t texture_id)
+const char *get_texture_path(uint32_t texture_id)
 {
   if (texture_id < sizeof(texture_filenames) / sizeof(texture_filenames[0]))
   {
@@ -33,7 +33,7 @@ const char *GetTexturePath(uint32_t texture_id)
   return ID_ASSET_INVALID;
 }
 
-const char *GetFontPath(uint32_t font_id)
+const char *get_fonth_path(uint32_t font_id)
 {
   if (font_id < sizeof(font_filenames) / sizeof(font_filenames[0]))
   {
@@ -44,7 +44,7 @@ const char *GetFontPath(uint32_t font_id)
   return ID_ASSET_INVALID;
 }
 
-const char *GetScriptPath(uint32_t script_id)
+const char *get_script_path(uint32_t script_id)
 {
   if (script_id < sizeof(script_filenames) / sizeof(script_filenames[0]))
   {
@@ -55,7 +55,7 @@ const char *GetScriptPath(uint32_t script_id)
   return ID_ASSET_INVALID;
 }
 
-const char *GetSoundPath(uint32_t sound_id)
+const char *get_sound_path(uint32_t sound_id)
 {
   if (sound_id < sizeof(sound_filenames) / sizeof(sound_filenames[0]))
   {

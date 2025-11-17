@@ -14,10 +14,10 @@
 
 #define ID_ASSET_INVALID "ASSET_ID_INVALID"
 
-const char *GetModelPath(uint32_t model_id);
-const char *GetTexturePath(uint32_t texture_id);
-const char *GetFontPath(uint32_t font_id);
-const char *GetScriptPath(uint32_t script_id);
-const char *GetSoundPath(uint32_t sound_id);
+const char *get_model_path(uint32_t model_id);
+const char *get_texture_path(uint32_t texture_id);
+const char *get_fonth_path(uint32_t font_id);
+const char *get_script_path(uint32_t script_id);
+const char *get_sound_path(uint32_t sound_id);
 
 #endif

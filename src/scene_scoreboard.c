@@ -12,7 +12,6 @@ static SceneScoreboardState scene_state;
 void scene_init_scoreboard(SceneManager *scene_manager)
 {
   ecs_init(&scene_state.ecs);
-  render_system_init(&scene_state.renderSystem);
 
   surface_t *disp = display_get();
   graphics_fill_screen(disp, 0x0);

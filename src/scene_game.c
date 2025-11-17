@@ -9,6 +9,8 @@
 
 static SceneGameState scene_state;
 
+void render_run();
+
 void scene_init_game(SceneManager *scene_manager)
 {
   ecs_init(&scene_state.ecs);
@@ -49,13 +51,16 @@ void scene_update_game(SceneManager *scene_manager, GameCommand command)
     ecs_add_position(&scene_state.ecs, 0, (Position){pos.x + 1.2, pos.y, pos.z});
   }
 
-  render_entities(&scene_state.ecs);
+  render_run();
+}
+
+void render_run()
+{
+  render_system_begin_frame(&scene_state.renderSystem);
+  render_entities(&scene_state.renderSystem, &scene_state.ecs);
+  render_system_end_frame(&scene_state.renderSystem);
 }
 
 void scene_exit_game()
 {
-  surface_t *disp = display_get();
-  graphics_fill_screen(disp, 0x0);
-  display_show(disp);
-  memset(&scene_state, 0, sizeof(SceneGameState));
 }
