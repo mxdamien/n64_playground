@@ -18,7 +18,8 @@ void attach_viewport(T3DViewport *viewport);
 void set_camera_view(T3DViewport *viewport);
 void render_system_begin_frame(RenderSystem *const render_system);
 void render_system_end_frame(RenderSystem *const render_system);
-void render_entities(RenderSystem *const render_system, ECS *const ecs);
+void render_system_render_entities(RenderSystem *const render_system, ECS *const ecs);
+T3DModel *render_system_get_cached_model(RenderSystem *const render_system, ECS *const ecs, Entity e);
 
 void render_system_init(RenderSystem *const render_system)
 {
@@ -107,6 +108,9 @@ void setup_lighting()
 
 void render_system_begin_frame(RenderSystem *const render_system)
 {
+  if (render_system == NULL)
+    return;
+
   rdpq_attach(display_get(), display_get_zbuf());
   t3d_frame_start();
   t3d_viewport_attach(&render_system->viewport);
@@ -114,18 +118,20 @@ void render_system_begin_frame(RenderSystem *const render_system)
   rspq_block_begin();
 }
 
-void render_entities(RenderSystem *const render_system, ECS *const ecs)
+void render_system_render_entities(RenderSystem *const render_system, ECS *const ecs)
 {
+  if (render_system == NULL)
+    return;
+
+  if (ecs == NULL)
+    return;
+
   for (int e = 0; e < MAX_ENTITIES; e++)
   {
     if (!ecs->active_entities[e])
       continue;
 
-    const char *fileName = get_model_path(ecs_get_model(ecs, e));
-    if (strcmp(fileName, ID_ASSET_INVALID) == 0)
-      continue;
-
-    T3DModel *model = t3d_model_load(fileName);
+    T3DModel *model = render_system_get_cached_model(render_system, ecs, e);
     if (model == NULL)
       return;
 
@@ -146,13 +152,37 @@ void render_entities(RenderSystem *const render_system, ECS *const ecs)
     t3d_matrix_push(fp);
     t3d_model_draw(model);
     t3d_matrix_pop(1);
-    t3d_model_free(model);
   }
+}
+
+T3DModel *render_system_get_cached_model(RenderSystem *const render_system, ECS *const ecs, Entity e)
+{
+  Model modelID = ecs_get_model(ecs, e);
+  if (render_system->model_cache[modelID])
+    return render_system->model_cache[modelID];
+
+  const char *fileName = get_model_path(modelID);
+  if (strcmp(fileName, ID_ASSET_INVALID) == 0)
+    return NULL;
+
+  render_system->model_cache[modelID] = t3d_model_load(fileName);
+  return render_system->model_cache[modelID];
 }
 
 void render_system_end_frame(RenderSystem *const render_system)
 {
+  if (render_system == NULL)
+    return;
+
   rspq_block_t *dplDraw = rspq_block_end();
   rspq_block_run(dplDraw);
   rdpq_detach_show();
+}
+
+void render_system_cleanup(RenderSystem *const render_system)
+{
+  if (render_system == NULL)
+    return;
+
+  memset(render_system, 0, sizeof(RenderSystem));
 }

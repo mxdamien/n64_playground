@@ -57,10 +57,11 @@ void scene_update_game(SceneManager *scene_manager, GameCommand command)
 void render_run()
 {
   render_system_begin_frame(&scene_state.renderSystem);
-  render_entities(&scene_state.renderSystem, &scene_state.ecs);
+  render_system_render_entities(&scene_state.renderSystem, &scene_state.ecs);
   render_system_end_frame(&scene_state.renderSystem);
 }
 
 void scene_exit_game()
 {
+  render_system_cleanup(&scene_state.renderSystem);
 }
