@@ -6,6 +6,7 @@
 
 #include <libdragon.h>
 #include <string.h>
+#include <math.h>
 
 static SceneGameState scene_state;
 
@@ -39,35 +40,67 @@ void scene_init_game(SceneManager *scene_manager)
   ecs_add_position(&scene_state.ecs, player, (Position){0.0f, 0.0f, 0.0f});
   ecs_add_velocity(&scene_state.ecs, player, (Velocity){0.0f, 0.0f, 0.0f});
   ecs_add_model(&scene_state.ecs, player, ID_MODEL_TABLE);
+  ecs_add_tilt(&scene_state.ecs, player, (Tilt){0.0f, 45.0f});
 }
+
+#include <math.h>
 
 void scene_update_game(SceneManager *scene_manager, GameCommand command)
 {
+  Tilt *tilt = ecs_get_tilt(&scene_state.ecs, 0);
+  if (tilt == NULL)
+    return;
+
+  Position pos = ecs_get_position(&scene_state.ecs, 0);
+
+  const float TILT_SPEED = 5.0f;
+  const float MAX_TILT_ANGLE = 45.0f;
+
   if (command == COMMAND_SELECT)
+  {
     scene_manager_set_scene(scene_manager, SCENE_SCOREBOARD);
+  }
 
   if (command == COMMAND_UP)
   {
-    Position pos = ecs_get_position(&scene_state.ecs, 0);
-    ecs_add_position(&scene_state.ecs, 0, (Position){pos.x, pos.y - 1.2, pos.z});
+    tilt->current_tilt_angle += TILT_SPEED;
+    if (tilt->current_tilt_angle > MAX_TILT_ANGLE)
+    {
+      tilt->current_tilt_angle = MAX_TILT_ANGLE;
+    }
+
+    float tilt_radians = tilt->current_tilt_angle * M_PI / 180.0f;
+    pos.x += sin(tilt_radians) * 1.2f;
+    pos.z += cos(tilt_radians) * 1.2f;
+
+    ecs_add_position(&scene_state.ecs, 0, pos);
   }
 
   if (command == COMMAND_DOWN)
   {
-    Position pos = ecs_get_position(&scene_state.ecs, 0);
-    ecs_add_position(&scene_state.ecs, 0, (Position){pos.x, pos.y + 1.2, pos.z});
+    tilt->current_tilt_angle -= TILT_SPEED;
+    if (tilt->current_tilt_angle < -MAX_TILT_ANGLE)
+    {
+      tilt->current_tilt_angle = -MAX_TILT_ANGLE;
+    }
+
+    float tilt_radians = tilt->current_tilt_angle * M_PI / 180.0f;
+    pos.x -= sin(tilt_radians) * 1.2f;
+    pos.z -= cos(tilt_radians) * 1.2f;
+
+    ecs_add_position(&scene_state.ecs, 0, pos);
   }
 
   if (command == COMMAND_LEFT)
   {
-    Position pos = ecs_get_position(&scene_state.ecs, 0);
-    ecs_add_position(&scene_state.ecs, 0, (Position){pos.x - 1.2, pos.y, pos.z});
+    pos.x -= 1.2f;
+    ecs_add_position(&scene_state.ecs, 0, pos);
   }
 
   if (command == COMMAND_RIGHT)
   {
-    Position pos = ecs_get_position(&scene_state.ecs, 0);
-    ecs_add_position(&scene_state.ecs, 0, (Position){pos.x + 1.2, pos.y, pos.z});
+    pos.x += 1.2f;
+    ecs_add_position(&scene_state.ecs, 0, pos);
   }
 
   render_system_update_frame(&scene_state.renderSystem, &scene_state.ecs);
