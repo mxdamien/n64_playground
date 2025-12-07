@@ -61,9 +61,14 @@ jobs:
         echo "N64_INST is set to: $N64_INST"
         ./build.sh
 
+    - name: Clean previous build artifacts
+      run: |
+        rm -rf build/*
+        echo "Cleaned previous build artifacts"
+
     - name: Build project
       run: |
         # Ensure the environment variable is sourced in this session
         source /etc/profile.d/libdragon.sh
         echo "N64_INST is set to: $N64_INST"
-        make
+        make V=1  # Increases verbosity to help with debugging
