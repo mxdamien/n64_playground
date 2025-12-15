@@ -153,6 +153,7 @@ void render_system_render_entities(RenderSystem *const render_system, ECS *const
       return;
 
     Position pos = ecs_get_position(ecs, e);
+    Rotation rot = ecs_get_rotation(ecs, e);
 
     T3DMat4 mat;
     t3d_mat4_identity(&mat);
@@ -161,7 +162,7 @@ void render_system_render_entities(RenderSystem *const render_system, ECS *const
     t3d_mat4_from_srt_euler(
         &mat,
         (float[3]){scale, scale, scale},
-        (float[3]){0, pos.y, 0},
+        (float[3]){rot.x, rot.y, rot.z},
         (float[3]){pos.x, pos.y, pos.z});
 
     T3DMat4FP *fp = malloc_uncached(sizeof(T3DMat4FP));

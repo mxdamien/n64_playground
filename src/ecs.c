@@ -31,7 +31,7 @@ void ecs_destroy_entity(ECS *const ecs, Entity e)
     ecs->has_position[e] = false;
     ecs->has_velocity[e] = false;
     ecs->has_model[e] = false;
-    ecs->has_tilt[e] = false;
+    ecs->has_rotation[e] = false;
     ecs->entity_count--;
   }
 }
@@ -79,19 +79,19 @@ Model ecs_get_model(const ECS *const ecs, Entity e)
   return ecs->models[e];
 }
 
-void ecs_add_tilt(ECS *const ecs, Entity e, Tilt tilt)
+void ecs_add_rotation(ECS *const ecs, Entity e, Rotation tilt)
 {
   if (e >= MAX_ENTITIES)
     return;
 
-  ecs->tilts[e] = tilt;
-  ecs->has_tilt[e] = true;
+  ecs->rotations[e] = tilt;
+  ecs->has_rotation[e] = true;
 }
 
-Tilt *ecs_get_tilt(ECS *const ecs, Entity e)
+Rotation ecs_get_rotation(ECS *const ecs, Entity e)
 {
-  if (e >= MAX_ENTITIES || !ecs->has_tilt[e])
-    return NULL;
+  if (e >= MAX_ENTITIES || !ecs->has_rotation[e])
+    return (Rotation){0.0f, 0.0f, 0.0f};
 
-  return &ecs->tilts[e];
+  return ecs->rotations[e];
 }

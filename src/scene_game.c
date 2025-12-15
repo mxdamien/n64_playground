@@ -40,69 +40,62 @@ void scene_init_game(SceneManager *scene_manager)
   ecs_add_position(&scene_state.ecs, player, (Position){0.0f, 0.0f, 0.0f});
   ecs_add_velocity(&scene_state.ecs, player, (Velocity){0.0f, 0.0f, 0.0f});
   ecs_add_model(&scene_state.ecs, player, ID_MODEL_TABLE);
-  ecs_add_tilt(&scene_state.ecs, player, (Tilt){0.0f, 45.0f});
+  ecs_add_rotation(&scene_state.ecs, player, (Rotation){0.0f, 45.0f});
 }
 
-#include <math.h>
+float clampRotation(float value, float maxAngle)
+{
+  if (value > maxAngle)
+    return maxAngle;
+  else if (value < -maxAngle)
+    return -maxAngle;
+  else
+    return value;
+}
+
+Rotation RotateTable(GameCommand command, Rotation currentRotation, float maxAngle)
+{
+  Rotation newRotation = currentRotation;
+  switch (command)
+  {
+  case COMMAND_UP:
+    newRotation.x += 0.1f;
+    newRotation.x = clampRotation(newRotation.x, maxAngle);
+    break;
+
+  case COMMAND_DOWN:
+    newRotation.x -= 0.1f;
+    newRotation.x = clampRotation(newRotation.x, maxAngle);
+    break;
+
+  case COMMAND_LEFT:
+    newRotation.y += 0.1f;
+    newRotation.y = clampRotation(newRotation.y, maxAngle);
+    break;
+
+  case COMMAND_RIGHT:
+    newRotation.y -= 0.1f;
+    newRotation.y = clampRotation(newRotation.y, maxAngle);
+    break;
+
+  default:
+    break;
+  }
+
+  return newRotation;
+}
 
 void scene_update_game(SceneManager *scene_manager, GameCommand command)
 {
-  Tilt *tilt = ecs_get_tilt(&scene_state.ecs, 0);
-  if (tilt == NULL)
-    return;
-
-  Position pos = ecs_get_position(&scene_state.ecs, 0);
-
-  const float TILT_SPEED = 5.0f;
-  const float MAX_TILT_ANGLE = 45.0f;
+  Rotation currentRot = ecs_get_rotation(&scene_state.ecs, 0);
 
   if (command == COMMAND_SELECT)
   {
     scene_manager_set_scene(scene_manager, SCENE_SCOREBOARD);
   }
 
-  if (command == COMMAND_UP)
-  {
-    tilt->current_tilt_angle += TILT_SPEED;
-    if (tilt->current_tilt_angle > MAX_TILT_ANGLE)
-    {
-      tilt->current_tilt_angle = MAX_TILT_ANGLE;
-    }
-
-    float tilt_radians = tilt->current_tilt_angle * M_PI / 180.0f;
-    pos.x += sin(tilt_radians) * 1.2f;
-    pos.z += cos(tilt_radians) * 1.2f;
-
-    ecs_add_position(&scene_state.ecs, 0, pos);
-  }
-
-  if (command == COMMAND_DOWN)
-  {
-    tilt->current_tilt_angle -= TILT_SPEED;
-    if (tilt->current_tilt_angle < -MAX_TILT_ANGLE)
-    {
-      tilt->current_tilt_angle = -MAX_TILT_ANGLE;
-    }
-
-    float tilt_radians = tilt->current_tilt_angle * M_PI / 180.0f;
-    pos.x -= sin(tilt_radians) * 1.2f;
-    pos.z -= cos(tilt_radians) * 1.2f;
-
-    ecs_add_position(&scene_state.ecs, 0, pos);
-  }
-
-  if (command == COMMAND_LEFT)
-  {
-    pos.x -= 1.2f;
-    ecs_add_position(&scene_state.ecs, 0, pos);
-  }
-
-  if (command == COMMAND_RIGHT)
-  {
-    pos.x += 1.2f;
-    ecs_add_position(&scene_state.ecs, 0, pos);
-  }
-
+  Rotation newRot = RotateTable(command, currentRot, M_PI / 4);
+  ecs_add_rotation(&scene_state.ecs, 0, newRot);
   render_system_update_frame(&scene_state.renderSystem, &scene_state.ecs);
 }
 

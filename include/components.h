@@ -7,11 +7,6 @@
 typedef vec3 Position;
 typedef vec3 Velocity;
 typedef uint32_t Model;
-
-typedef struct
-{
-  float current_tilt_angle;
-  float max_tilt_angle;
-} Tilt;
+typedef vec3 Rotation;
 
 #endif

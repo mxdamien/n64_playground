@@ -26,8 +26,8 @@ typedef struct ECS
   Model models[MAX_ENTITIES];
   bool has_model[MAX_ENTITIES];
 
-  Tilt tilts[MAX_ENTITIES];
-  bool has_tilt[MAX_ENTITIES];
+  Rotation rotations[MAX_ENTITIES];
+  bool has_rotation[MAX_ENTITIES];
 
   int entity_count;
 } ECS;
@@ -40,10 +40,10 @@ void ecs_destroy_entity(ECS *const ecs, Entity e);
 void ecs_add_position(ECS *const ecs, Entity e, Position pos);
 void ecs_add_velocity(ECS *const ecs, Entity e, Velocity vel);
 void ecs_add_model(ECS *const ecs, Entity e, Model model);
-void ecs_add_tilt(ECS *const ecs, Entity e, Tilt tilt);
+void ecs_add_rotation(ECS *const ecs, Entity e, Rotation rotation);
 
 Position ecs_get_position(const ECS *const ecs, Entity e);
 Model ecs_get_model(const ECS *const ecs, Entity e);
-Tilt *ecs_get_tilt(ECS *const ecs, Entity e);
+Rotation ecs_get_rotation(ECS *const ecs, Entity e);
 
 #endif
