@@ -129,7 +129,6 @@ void render_system_begin_frame(RenderSystem *const render_system)
   t3d_frame_start();
   t3d_viewport_attach(&render_system->viewport);
   clear_scene();
-  rspq_block_begin();
 }
 
 void clear_scene()
@@ -191,6 +190,7 @@ void render_system_end_frame(RenderSystem *const render_system)
 {
   if (render_system == NULL)
     return;
+  rspq_block_begin();
   rspq_block_t *dplDraw = rspq_block_end();
   rspq_block_run(dplDraw);
   rdpq_detach_show();
