@@ -1,5 +1,5 @@
-# Default to release if no target is specified
-BUILD_TYPE ?= release
+# Default to debug if no target is specified
+BUILD_TYPE ?= debug
 
 # Set CFLAGS, LDFLAGS, etc., based on the build type
 ifeq ($(BUILD_TYPE), debug)
