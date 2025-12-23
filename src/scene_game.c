@@ -40,7 +40,7 @@ void scene_init_game(SceneManager *scene_manager)
   ecs_add_position(&scene_state.ecs, player, (Position){0.0f, 0.0f, 0.0f});
   ecs_add_velocity(&scene_state.ecs, player, (Velocity){0.0f, 0.0f, 0.0f});
   ecs_add_model(&scene_state.ecs, player, ID_MODEL_TABLE);
-  ecs_add_rotation(&scene_state.ecs, player, (Rotation){0.0f, 45.0f});
+  ecs_add_rotation(&scene_state.ecs, player, (Rotation){10.0f, 0.0f, 45.0f});
 }
 
 float clampRotation(float value, float maxAngle)
@@ -56,25 +56,60 @@ float clampRotation(float value, float maxAngle)
 Rotation RotateTable(GameCommand command, Rotation currentRotation, float maxAngle)
 {
   Rotation newRotation = currentRotation;
+
+  const float step = 0.1f;
+
   switch (command)
   {
   case COMMAND_UP:
-    newRotation.x += 0.1f;
+    newRotation.x += step;
     newRotation.x = clampRotation(newRotation.x, maxAngle);
     break;
 
   case COMMAND_DOWN:
-    newRotation.x -= 0.1f;
+    newRotation.x -= step;
     newRotation.x = clampRotation(newRotation.x, maxAngle);
     break;
 
   case COMMAND_LEFT:
-    newRotation.y += 0.1f;
+    newRotation.y += step;
     newRotation.y = clampRotation(newRotation.y, maxAngle);
     break;
 
   case COMMAND_RIGHT:
-    newRotation.y -= 0.1f;
+    newRotation.y -= step;
+    newRotation.y = clampRotation(newRotation.y, maxAngle);
+    break;
+
+  case COMMAND_UP_LEFT:
+    newRotation.x += step;
+    newRotation.x = clampRotation(newRotation.x, maxAngle);
+
+    newRotation.y += step;
+    newRotation.y = clampRotation(newRotation.y, maxAngle);
+    break;
+
+  case COMMAND_UP_RIGHT:
+    newRotation.x += step;
+    newRotation.x = clampRotation(newRotation.x, maxAngle);
+
+    newRotation.y -= step;
+    newRotation.y = clampRotation(newRotation.y, maxAngle);
+    break;
+
+  case COMMAND_DOWN_LEFT:
+    newRotation.x -= step;
+    newRotation.x = clampRotation(newRotation.x, maxAngle);
+
+    newRotation.y += step;
+    newRotation.y = clampRotation(newRotation.y, maxAngle);
+    break;
+
+  case COMMAND_DOWN_RIGHT:
+    newRotation.x -= step;
+    newRotation.x = clampRotation(newRotation.x, maxAngle);
+
+    newRotation.y -= step;
     newRotation.y = clampRotation(newRotation.y, maxAngle);
     break;
 
