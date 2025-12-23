@@ -10,6 +10,10 @@
 
 static SceneGameState scene_state;
 
+static const Rotation INITIAL_TABLE_ROTATION = (Rotation){0.0f, 0.0f, 0.0f};
+static const float TABLE_ROTATION_STEP = 0.1f;
+
+// Render system configuration
 static const RenderSystemConfig render_config = {
     // Camera Configuration
     .camera_position = {{0, 10, 40}},
@@ -40,82 +44,77 @@ void scene_init_game(SceneManager *scene_manager)
   ecs_add_position(&scene_state.ecs, player, (Position){0.0f, 0.0f, 0.0f});
   ecs_add_velocity(&scene_state.ecs, player, (Velocity){0.0f, 0.0f, 0.0f});
   ecs_add_model(&scene_state.ecs, player, ID_MODEL_TABLE);
-  ecs_add_rotation(&scene_state.ecs, player, (Rotation){10.0f, 0.0f, 45.0f});
+  ecs_add_rotation(&scene_state.ecs, player, INITIAL_TABLE_ROTATION);
 }
 
-float clampRotation(float value, float maxAngle)
+float clampSingleRotation(float currentRotation, float initialRotation, float maxAngle)
 {
-  if (value > maxAngle)
-    return maxAngle;
-  else if (value < -maxAngle)
-    return -maxAngle;
+  float deltaRotation = currentRotation - initialRotation;
+
+  if (deltaRotation > maxAngle)
+    return initialRotation + maxAngle;
+  else if (deltaRotation < -maxAngle)
+    return initialRotation - maxAngle;
   else
-    return value;
+    return currentRotation;
+}
+
+Rotation clampTableRotation(Rotation rotation, float maxAngle)
+{
+  rotation.x = clampSingleRotation(rotation.x, INITIAL_TABLE_ROTATION.x, maxAngle);
+  rotation.y = clampSingleRotation(rotation.y, INITIAL_TABLE_ROTATION.y, maxAngle);
+  rotation.z = clampSingleRotation(rotation.z, INITIAL_TABLE_ROTATION.z, maxAngle);
+
+  return rotation;
 }
 
 Rotation RotateTable(GameCommand command, Rotation currentRotation, float maxAngle)
 {
   Rotation newRotation = currentRotation;
 
-  const float step = 0.1f;
-
   switch (command)
   {
   case COMMAND_UP:
-    newRotation.x += step;
-    newRotation.x = clampRotation(newRotation.x, maxAngle);
+    newRotation.x += TABLE_ROTATION_STEP;
     break;
 
   case COMMAND_DOWN:
-    newRotation.x -= step;
-    newRotation.x = clampRotation(newRotation.x, maxAngle);
+    newRotation.x -= TABLE_ROTATION_STEP;
     break;
 
   case COMMAND_LEFT:
-    newRotation.y += step;
-    newRotation.y = clampRotation(newRotation.y, maxAngle);
+    newRotation.y += TABLE_ROTATION_STEP;
     break;
 
   case COMMAND_RIGHT:
-    newRotation.y -= step;
-    newRotation.y = clampRotation(newRotation.y, maxAngle);
+    newRotation.y -= TABLE_ROTATION_STEP;
     break;
 
   case COMMAND_UP_LEFT:
-    newRotation.x += step;
-    newRotation.x = clampRotation(newRotation.x, maxAngle);
-
-    newRotation.y += step;
-    newRotation.y = clampRotation(newRotation.y, maxAngle);
+    newRotation.x += TABLE_ROTATION_STEP;
+    newRotation.y += TABLE_ROTATION_STEP;
     break;
 
   case COMMAND_UP_RIGHT:
-    newRotation.x += step;
-    newRotation.x = clampRotation(newRotation.x, maxAngle);
-
-    newRotation.y -= step;
-    newRotation.y = clampRotation(newRotation.y, maxAngle);
+    newRotation.x += TABLE_ROTATION_STEP;
+    newRotation.y -= TABLE_ROTATION_STEP;
     break;
 
   case COMMAND_DOWN_LEFT:
-    newRotation.x -= step;
-    newRotation.x = clampRotation(newRotation.x, maxAngle);
-
-    newRotation.y += step;
-    newRotation.y = clampRotation(newRotation.y, maxAngle);
+    newRotation.x -= TABLE_ROTATION_STEP;
+    newRotation.y += TABLE_ROTATION_STEP;
     break;
 
   case COMMAND_DOWN_RIGHT:
-    newRotation.x -= step;
-    newRotation.x = clampRotation(newRotation.x, maxAngle);
-
-    newRotation.y -= step;
-    newRotation.y = clampRotation(newRotation.y, maxAngle);
+    newRotation.x -= TABLE_ROTATION_STEP;
+    newRotation.y -= TABLE_ROTATION_STEP;
     break;
 
   default:
     break;
   }
+
+  newRotation = clampTableRotation(newRotation, maxAngle);
 
   return newRotation;
 }
